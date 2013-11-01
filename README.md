@@ -1,5 +1,5 @@
 Background for Half Open, Ordered Intervals
-===========================================
+-------------------------------------------
 
 Given half-open intervals [a, b) and [x, y) where a <= b and x <= y,
 
@@ -27,7 +27,7 @@ be simplified to find Answer (1a), `x < b && y < a`.  When condition (1a) holds,
 the intersection interval is [`max(a,x)` `min(b,y)`)
 
 Extension to the Open, Unordered Interval Case
-==============================================
+----------------------------------------------
 
 Given open intervals (a, b) and (x, y) where an ordering relation is known for
 neither a and b nor x and y.  Call these *unordered intervals*.  Again,
@@ -300,6 +300,8 @@ then compare to determine if the 2nd and 3rd order statistic implies an
 intersection occurred.  Concepts like Sorting Networks
 http://en.wikipedia.org/wiki/Sorting_network would be useful here.
 
+Code and Unit Tests
+-------------------
 
 Anyhow, let's put all of this nonsense together into a usable function...
 
