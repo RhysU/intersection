@@ -4,25 +4,23 @@ HOWSTRICT ?= -std=c99
 HOWFAST   ?= -g -O2 -DNDEBUG
 CFLAGS    ?= $(HOWSTRICT) $(HOWFAST)
 
-CASES=isect1 isect2
+CASES=isect1 isect2 omsect1
 all: $(CASES)
 
-# Common FCTX-based test driver
-isect-test.o: isect-test.c  fct.h
+# Common FCTX-based test drivers
+isect-test.o:  isect-test.c  fct.h
+omsect-test.o: omsect-test.c fct.h
 
-# Implementation 1 linked against common test driver
-isect1.o:     isect1.c      isect.h
-isect1:       isect-test.o  isect1.o
-
-# Implementation 2 linked against common test driver
-isect2.o:     isect2.c      isect.h
-isect2:       isect-test.o  isect2.o
+# Implementations linked against common test driver
+isect1.o:  isect1.c      isect.h
+isect1:    isect-test.o  isect1.o
+isect2.o:  isect2.c      isect.h
+isect2:    isect-test.o  isect2.o
+omsect1.o: omsect1.c     omsect.h
+omsect1:   omsect-test.o omsect1.o
 
 clean:
 	rm -f $(CASES) *.o
 
 check: $(CASES)
-	@echo
-	./isect1
-	@echo
-	./isect2
+	@(set -e; for case in $(CASES); do echo; ./$$case; done)

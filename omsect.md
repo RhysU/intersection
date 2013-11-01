@@ -85,15 +85,17 @@ Obtaining an expression for when x is the lower bound:
 
     int xlower = B&C&~D&F|B&~C&~D&~E&~F;
 
-And now for y being the lower bound which can be done by inspection:
+And now for y being the lower bound:
 
     case   perm.   a<x a<y b<x b<y x<y  omint. (abxy, abxy)
     ----  -------  --- --- --- --- ---  ------ ------------
       6   a y x b   B   C  /D  /E  /F   (y, x)  0001  0010
 
-    BC/D/E/F
+    qmc -s "BC/D/E/F"
 
-    int ylower = BC~D~E~F;
+    B*C*/D*/E*/F
+
+    int ylower = B&C&~D&~E&~F;
 
 
 Though a <= b by assumption, a can be the upper bound when y < x.
@@ -123,15 +125,17 @@ Obtaining an expression for when b is the upper bound:
 
     int bupper = C&~D&E&F;
 
-Obtaining an expression for when x is the upper bound by inspection:
+Obtaining an expression for when x is the upper bound:
 
     case   perm.   a<x a<y b<x b<y x<y  omint. (abxy, abxy)
     ----  -------  --- --- --- --- ---  ------ ------------
       6   a y x b   B   C  /D  /E  /F   (y, x)  0001  0010
 
-    BC/D/E/F
+    qmc -s "BC/D/E/F"
 
-    int xupper = BC~D~E~F;
+    B*C*/D*/E*/F
+
+    int xupper = B&C&~D&~E&~F;
 
 Finally, when y is the upper bound:
 
@@ -150,36 +154,4 @@ Finally, when y is the upper bound:
 
 Now, getting to the implementation...
 
-/**
- * Given points \c a, \c b, \c x, and \c y under the assumption <code>a <=
- * b\</code>, do intervals \c ab and \c xy overlap and if so what is the
- * order-matching interval?  Order-matching means an interval with endpoints
- * (p, q) such that p < q whenever x <= y and p > q whenever x > y.
- *
- * \param[in ] a Left endpoint on the first interval
- * \param[in ] b Right endpoint on the first interval
- * \param[in ] x Endpoint on the second interval
- * \param[in ] y Another on the second interval
- * \param[out] l if method returns \c true, set to be the lower
- *               endpoint of the order-matching intersection.
- * \param[out] h if method returns \c true, set to be the lower
- *               endpoint of the order-matching intersection.
- * \return True if the segments intersect.  False otherwise.
- */
-int omsect(double a, double b, double x, double y, double *l, double *u)
-{
-    const int B=a<x, C=a<y, D=b<x, E=b<y;
-    const int ret = B&~E|B&~D|B&~C|C&~E|C&~D|~B&C|D&~E|~C&D|~B&D|~D&E|~C&E|~B&E;
-    if (ret) {
-        const int F=x<y;
-        *l  = a*(~B&C&~D&F);              /* alower */
-        *u  = a*(B&~C&~E&~F);             /* aupper */
-        *l += b*(B&D&~E&~F);              /* blower */
-        *u += b*(C&~D&E&F);               /* bupper */
-        *l += x*(B&C&~D&F|B&~C&~D&~E&~F); /* xlower */
-        *u += x*(BC~D~E~F);               /* xupper */
-        *l += y*(BC~D~E~F);               /* ylower */
-        *u += y*(C&~D&~E&F|B&C&D&~E&~F);  /* yupper */
-    }
-    return ret;
-}
+It may be unit tested by...
