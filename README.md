@@ -341,7 +341,7 @@ Anyhow, let's put all of this nonsense together into a usable function...
 
 Then let's test the logic with [FCTX](http://fctx.wildbearsoftware.com/).
 Comprehensive test cases, employing 1234 in lieu of abxy, are fairly easy to
-come by here as we've already enumerated what we expect to occur:
+come by here as we've already enumerated what we expect to encounter:
 
     #include "fct.h"
 
