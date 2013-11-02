@@ -25,7 +25,7 @@ cases via negation these two situations yielding `!(b <= x || y <= a)` which can
 be simplified to find Answer (1a), `x < b && y < a`.  When condition (1a) holds,
 the intersection interval is [`max(a,x)` `min(b,y)`)
 
-## Extension to the Open, Unordered Interval Problem
+## Extension to the Open, Unordered Intervals
 
 ### Problem specification
 
@@ -441,7 +441,7 @@ reordering local variables to better match their use order:
         return ret;
     }
 
-## Extension to the Open, Semi-ordered Interval Problem
+## Extension to the Open, Semi-ordered Intervals
 
 ### Problem specification
 
@@ -477,24 +477,9 @@ of an intersection, these eight outputs will all be false.
      11   y a x b   1   0   0   0   0   (x, a)  0010  1000
      12   y x a b   0   0   0   0   0   none    0000  0000
 
-
-To check for the presence of an intersection, we negate the non-intersection
-cases.  That is,
-
-    case   perm.   a<x a<y b<x b<y x<y  omint. (abxy, abxy)
-    ----  -------  --- --- --- --- ---  ------ ------------
-      1   a b x y   B   C   D   E   F   none    0000  0000
-      2   a b y x   B   C   D   E  /F   none    0000  0000
-      9   x y a b  /B  /C  /D  /E   F   none    0000  0000
-     12   y x a b  /B  /C  /D  /E  /F   none    0000  0000
-
-    qmc -s "/[BCDEF+BCDE/F+/B/C/D/EF+/B/C/D/E/F]"
-
-    B*/E+B*/D+B*/C+C*/E+C*/D+/B*C+D*/E+/C*D+/B*D+/D*E+/C*E+/B*E
-
-    int B=a<x, C=a<y, D=b<x, E=b<y, F=x<y;
-    int omsect = B&~E|B&~D|B&~C|C&~E|C&~D|~B&C|D&~E|~C&D|~B&D|~D&E|~C&E|~B&E;
-
+Question (3a) is identical to Question (2a) and so the boolean expression
+already derived for whether or not an intersection occurs may simply
+be reused.
 
 Obtaining an expression for when a is the lower bound:
 
@@ -507,6 +492,7 @@ Obtaining an expression for when a is the lower bound:
 
     /B*C*/D*F
 
+    int B=a<x, C=a<y, D=b<x, E=b<y, F=x<y;
     int alower = ~B&C&~D&F;
 
 Obtaining an expression for when b is the lower bound:
