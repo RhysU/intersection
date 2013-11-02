@@ -25,7 +25,7 @@ cases via negation these two situations yielding `!(b <= x || y <= a)` which can
 be simplified to find Answer (1a), `x < b && y < a`.  When condition (1a) holds,
 the intersection interval is [`max(a,x)` `min(b,y)`)
 
-## Extension to the Open, Unordered Intervals
+## Extension to Open, Unordered Intervals
 
 ### Problem specification
 
@@ -441,7 +441,7 @@ reordering local variables to better match their use order:
         return ret;
     }
 
-## Extension to the Open, Semi-ordered Intervals
+## Extension to Open, Semi-ordered Intervals
 
 ### Problem specification
 
