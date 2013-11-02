@@ -20,7 +20,7 @@ of an intersection, these eight outputs will all be false.
       3   a x b y   1   1   0   1   1   (x, b)  0010  0100
       4   a x y b   1   1   0   0   1   (x, y)  0010  0001
       5   a y b x   1   1   1   0   0   (b, y)  0100  0001
-      6   a y x b   1   1   0   0   0   (y, x)  0001  0010
+      6   a y x b   1   1   0   0   0   (x, y)  0010  0001
       7   x a b y   0   1   0   1   1   (a, b)  1000  0100
       8   x a y b   0   1   0   0   1   (a, y)  1000  0001
       9   x y a b   0   0   0   0   1   none    0000  0000
@@ -79,23 +79,16 @@ Obtaining an expression for when x is the lower bound:
     ----  -------  --- --- --- --- ---  ------ ------------
       3   a x b y   B   C  /D   E   F   (x, b)  0010  0100
       4   a x y b   B   C  /D  /E   F   (x, y)  0010  0001
+      6   a y x b   B   C  /D  /E  /F   (x, y)  0010  0001
      11   y a x b   B  /C  /D  /E  /F   (x, a)  0010  1000
 
-    qmc -s "BC/DEF+BC/D/EF+B/C/D/E/F"
+    qmc -s "BC/DEF+BC/D/EF+BC/D/E/F+B/C/D/E/F"
 
-    int xlower = B&C&~D&F|B&~C&~D&~E&~F;
+    B*/D*/E*/F+B*C*/D*/E+B*C*/D*F
 
-And now for y being the lower bound:
+    int xlower = B&~D&~E&~F|B&C&~D&~E|B&C&~D&F;
 
-    case   perm.   a<x a<y b<x b<y x<y  omint. (abxy, abxy)
-    ----  -------  --- --- --- --- ---  ------ ------------
-      6   a y x b   B   C  /D  /E  /F   (y, x)  0001  0010
-
-    qmc -s "BC/D/E/F"
-
-    B*C*/D*/E*/F
-
-    int ylower = B&C&~D&~E&~F;
+The lower bound never takes the value y.
 
 
 Though a <= b by assumption, a can be the upper bound when y < x.
@@ -125,31 +118,20 @@ Obtaining an expression for when b is the upper bound:
 
     int bupper = C&~D&E&F;
 
-Obtaining an expression for when x is the upper bound:
-
-    case   perm.   a<x a<y b<x b<y x<y  omint. (abxy, abxy)
-    ----  -------  --- --- --- --- ---  ------ ------------
-      6   a y x b   B   C  /D  /E  /F   (y, x)  0001  0010
-
-    qmc -s "BC/D/E/F"
-
-    B*C*/D*/E*/F
-
-    int xupper = B&C&~D&~E&~F;
-
-Finally, when y is the upper bound:
+The upper bound never takes the value x.  Finally, when y is the upper bound:
 
     case   perm.   a<x a<y b<x b<y x<y  omint. (abxy, abxy)
     ----  -------  --- --- --- --- ---  ------ ------------
       4   a x y b   B   C  /D  /E   F   (x, y)  0010  0001
       5   a y b x   B   C   D  /E  /F   (b, y)  0100  0001
+      6   a y x b   B   C  /D  /E  /F   (x, y)  0010  0001
       8   x a y b  /B   C  /D  /E   F   (a, y)  1000  0001
 
-    qmc -s "BC/D/EF+BCD/E/F+/BC/D/EF"
+    qmc -s "BC/D/EF+BCD/E/F+BC/D/E/F+/BC/D/EF"
 
-    C*/D*/E*F+B*C*D*/E*/F
+    B*C*/E*/F+B*C*/D*/E+C*/D*/E*F
 
-    int yupper = C&~D&~E&F|B&C&D&~E&~F;
+    int yupper = B&C&~E&~F|B&C&~D&~E|C&~D&~E&F;
 
 
 Now, getting to the implementation...
