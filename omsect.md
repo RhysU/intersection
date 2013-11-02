@@ -136,4 +136,75 @@ The upper bound never takes the value x.  Finally, when y is the upper bound:
 
 Now, getting to the implementation...
 
+    /**
+     * Given points \c a, \c b, \c x, and \c y under the assumption <code>a <=
+     * b\</code>, do intervals \c ab and \c xy overlap and if so what is the
+     * order-matching interval?  Order-matching means an interval with endpoints
+     * (p, q) such that p < q whenever x <= y and p > q whenever x > y.
+     *
+     * \param[in ] a Left endpoint on the first interval
+     * \param[in ] b Right endpoint on the first interval
+     * \param[in ] x Endpoint on the second interval
+     * \param[in ] y Another on the second interval
+     * \param[out] l if method returns \c true, set to be the lower
+     *               endpoint of the order-matching intersection.
+     * \param[out] h if method returns \c true, set to be the lower
+     *               endpoint of the order-matching intersection.
+     * \return True if the segments intersect.  False otherwise.
+     */
+    int omsect(double a, double b, double x, double y, double *l, double *u)
+    {
+        assert(a<b);
+        const int B=a<x, C=a<y, D=b<x, E=b<y;
+        const int ret = B&~E|B&~D|B&~C|C&~E|C&~D|~B&C|D&~E|~C&D|~B&D|~D&E|~C&E|~B&E;
+        if (ret) {
+            const int F=x<y;
+            *l  = a*(~B&C&~D&F);                      /* alower */
+            *u  = a*(B&~C&~E&~F);                     /* aupper */
+            *l += b*(B&D&~E&~F);                      /* blower */
+            *u += b*(C&~D&E&F);                       /* bupper */
+            *l += x*(B&~D&~E&~F|B&C&~D&~E|B&C&~D&F);  /* xlower */
+            *u += y*(B&C&~E&~F|B&C&~D&~E|C&~D&~E&F);  /* yupper */
+        }
+        return ret;
+    }
+
+...where an assertion has been added requiring inclusion of `assert.h`.  The
+assertion serves to protect us when, like I did during testing, we feed in
+inputs violating the assumption that a < b.
+
 It may be unit tested by...
+
+    #include <assert.h>
+    #include "fct.h"
+
+    FCT_BGN()
+    {
+        FCT_QTEST_BGN(omsect)
+        {
+            // Table driven test inputs and expected results
+            // Test index   =  0 1 2 3 4 5 6 7 8 9 0 1
+            const int a[12] = {1,1,1,1,1,1,2,2,2,2,3,3};
+            const int b[12] = {2,2,3,3,4,4,3,3,4,4,4,4};
+            const int x[12] = {3,4,2,4,2,3,1,4,1,3,1,2};
+            const int y[12] = {4,3,4,2,3,2,4,1,3,1,2,1};
+            const int I[12] = {0,0,1,1,1,1,1,1,1,1,0,0};
+            const int L[12] = {0,0,2,3,2,3,2,3,2,3,0,0};
+            const int H[12] = {0,0,3,2,3,2,3,2,3,2,0,0};
+
+            // Test each column in the table above
+            for (size_t j = 0; j < 12; ++j) {
+                double lo, hi;
+                const int res = omsect(a[j], b[j], x[j], y[j], &lo, &hi);
+                fct_xchk(res == I[j], "I[%02d]: %d vs %d", j, res, I[j]);
+                if (I[j]) {
+                    fct_xchk(lo == L[j], "L[%02d]: %g expecting %d", j, lo, L[j]);
+                    fct_xchk(hi == H[j], "U[%02d]: %g expecting %d", j, hi, H[j]);
+                }
+            }
+        }
+        FCT_QTEST_END();
+    }
+    FCT_END();
+
+...which the given implementation passes.
