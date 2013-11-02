@@ -389,7 +389,7 @@ did it?  Probably.
 On thing likely worth doing is deferring computing the intersection segment
 unless an intersection actually exists...
 
-
+    /* Revised */
     int isect(double a, double b, double x, double y, double *l, double *u)
     {
         const int A=a<b, B=a<x, C=a<y, D=b<x, E=b<y;

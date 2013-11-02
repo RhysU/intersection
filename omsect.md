@@ -207,4 +207,24 @@ It may be unit tested by...
     }
     FCT_END();
 
-...which the given implementation passes.
+...which the given implementation passes.  There is a fair amount of redundancy
+in the boolean expressions found above.  After some manual factoring one
+may obtain
+
+    /* Revised */
+    int omsect(double a, double b, double x, double y, double *l, double *u)
+    {
+        assert(a<b);
+        const int B=a<x, C=a<y, D=b<x, E=b<y;
+        const int ret = B&~(C&D&E)|C&~(D&E)|D&~(E)|~B&(C|D|E)|~C&(D|E)|~D&(E);
+        if (ret) {
+            const int F=x<y;
+            *l  = a*(~B&C&~D&F);               /* alower */
+            *u  = a*(B&~C&~E&~F);              /* aupper */
+            *l += b*(B&D&~E&~F);               /* blower */
+            *u += b*(C&~D&E&F);                /* bupper */
+            *l += x*(B&(~D&(~E&~F|C&(~E|F)))); /* xlower */
+            *u += y*(C&(~E&(B&(~D|~F)|~D&F))); /* yupper */
+        }
+        return ret;
+    }
