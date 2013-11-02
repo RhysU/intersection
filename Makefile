@@ -1,29 +1,35 @@
 # GNU-like toolchain assumed
 
 HOWSTRICT ?= -std=c99
-HOWFAST   ?= -g -O2 # -DNDEBUG
+HOWFAST   ?= -g -O2
 CFLAGS    ?= $(HOWSTRICT) $(HOWFAST)
 
-CASES=isect1 isect2 isect3 omsect1 omsect2
+CASES=isect1 isect2 isect3 isect4 omsect1 omsect2 omsect3
 all: $(CASES)
 
-# Common FCTX-based test drivers
-isect-test.o:  isect-test.c  fct.h
-omsect-test.o: omsect-test.c fct.h
+# Numbered implementations of isect() linked against common FCTX test driver
+isect-test.o: isect-test.c fct.h
+isect1.o:     isect1.c     isect.h
+isect2.o:     isect2.c     isect.h
+isect3.o:     isect3.c     isect.h
+isect4.o:     isect4.c     isect.h
+isect1:       isect-test.o isect1.o
+isect2:       isect-test.o isect2.o
+isect3:       isect-test.o isect3.o
+isect4:       isect-test.o isect4.o
 
-# Implementations linked against common test driver
-isect1.o:  isect1.c      isect.h
-isect1:    isect-test.o  isect1.o
-isect2.o:  isect2.c      isect.h
-isect2:    isect-test.o  isect2.o
-isect3.o:  isect3.c      isect.h
-isect3:    isect-test.o  isect3.o
+# Numbered implementations of omsect() linked against common FCTX test driver
+omsect-test.o:  omsect-test.c  fct.h
+omsect1.o:      omsect1.c      omsect.h
+omsect2.o:      omsect2.c      omsect.h
+omsect3.o:      omsect3.c      omsect.h
+omsect1:        omsect-test.o  omsect1.o
+omsect2:        omsect-test.o  omsect2.o
+omsect3:        omsect-test.o  omsect3.o
 
-# Implementations linked against common test driver
-omsect1.o: omsect1.c     omsect.h
-omsect1:   omsect-test.o omsect1.o
-omsect2.o: omsect2.c     omsect.h
-omsect2:   omsect-test.o omsect2.o
+# Only the final "production" versions of each have all warnings silenced
+isect4.o:  CFLAGS += -Wall
+omsect3.o: CFLAGS += -Wall
 
 clean:
 	rm -f $(CASES) *.o
