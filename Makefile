@@ -1,7 +1,7 @@
 # GNU-like toolchain assumed
 
 HOWSTRICT ?= -std=c99
-HOWFAST   ?= -g -O2 -DNDEBUG
+HOWFAST   ?= -g -O2 # -DNDEBUG
 CFLAGS    ?= $(HOWSTRICT) $(HOWFAST)
 
 CASES=isect1 isect2 omsect1

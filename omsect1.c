@@ -1,9 +1,12 @@
 /* This is free and unencumbered software released into the public domain. */
 
+#include <assert.h>
+
 #include "omsect.h"
 
 int omsect(double a, double b, double x, double y, double *l, double *u)
 {
+    assert(a<b);
     const int B=a<x, C=a<y, D=b<x, E=b<y;
     const int ret = B&~E|B&~D|B&~C|C&~E|C&~D|~B&C|D&~E|~C&D|~B&D|~D&E|~C&E|~B&E;
     if (ret) {
