@@ -1,7 +1,7 @@
 # GNU-like toolchain assumed
 
-HOWSTRICT ?= -std=c99
-HOWFAST   ?= -g -O2
+HOWSTRICT ?= -std=c99 -pedantic
+HOWFAST   ?= -g -O3
 CFLAGS    ?= $(HOWSTRICT) $(HOWFAST)
 
 CASES=isect1 isect2 isect3 isect4 omsect1 omsect2 omsect3
@@ -28,8 +28,8 @@ omsect2:        omsect-test.o  omsect2.o
 omsect3:        omsect-test.o  omsect3.o
 
 # Only the final "production" versions of each have all warnings silenced
-isect4.o:  CFLAGS += -Wall
-omsect3.o: CFLAGS += -Wall
+isect4.o:  CFLAGS += -Wall -Wextra
+omsect3.o: CFLAGS += -Wall -Wextra
 
 clean:
 	rm -f $(CASES) *.o

@@ -30,4 +30,4 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 }
-FCT_END();
+FCT_END()
