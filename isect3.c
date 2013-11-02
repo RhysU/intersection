@@ -4,10 +4,10 @@
 
 int isect(double a, double b, double x, double y, double *l, double *u)
 {
-    const int A=a<b, B=a<x, C=a<y, D=b<x, E=b<y;
-    const int ret = B&~(C&D&E)|C&~(D&E)|D&~(E)|~B&(C|D|E)|~C&(D|E)|~D&E;
+    const int D=b<x, E=b<y, C=a<y, B=a<x;
+    const int ret = D&~E|~D&E|C&~(D&E)|~C&(D|E)|B&~(C&D&E)|~B&(C|D|E);
     if (ret) {
-        const int F=x<y;
+        const int A=a<b, F=x<y;
         *l  = a*(A&(B&~C&~E&~F|~B&C&~D&F));  /* alower */
         *u  = a*(~A&(B&~C&D&~F|~B&C&E&F));   /* aupper */
         *l += b*(~A&(~C&D&~E&~F|~B&~D&E&F)); /* blower */
