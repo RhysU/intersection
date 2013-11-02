@@ -134,7 +134,7 @@ Towards checking qmc against our Answer (2a):
      23   y x a b   A  /B  /C  /D  / E /F   none    0000  0000
      24   y x b a  /A  /B  /C  /D  / E /F   none    0000  0000
 
-The command for qmc to simply for the presence of an intersection is
+The command for qmc to simplify for the presence of an intersection is
 
      qmc -s "/[   A   B   C   D    E  F
                +  A   B   C   D    E /F
