@@ -21,10 +21,10 @@ FCT_BGN()
         for (size_t j = 0; j < 12; ++j) {
             double lo, hi;
             const int res = omsect(a[j], b[j], x[j], y[j], &lo, &hi);
-            fct_xchk(res == I[j], "Test %d wrong: %d vs %d", j+1, res, I[j]);
+            fct_xchk(res == I[j], "I[%02d]: %d vs %d", j, res, I[j]);
             if (I[j]) {
-                fct_xchk(lo == L[j], "Lower %d wrong: %d vs %g", j, lo, L[j]);
-                fct_xchk(hi == H[j], "Upper %d wrong: %d vs %g", j, hi, H[j]);
+                fct_xchk(lo == L[j], "L[%02d]: %g expecting %d", j, lo, L[j]);
+                fct_xchk(hi == H[j], "U[%02d]: %g expecting %d", j, hi, H[j]);
             }
         }
     }
