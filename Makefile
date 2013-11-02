@@ -4,7 +4,7 @@ HOWSTRICT ?= -std=c99
 HOWFAST   ?= -g -O2 # -DNDEBUG
 CFLAGS    ?= $(HOWSTRICT) $(HOWFAST)
 
-CASES=isect1 isect2 omsect1 omsect2
+CASES=isect1 isect2 isect3 omsect1 omsect2
 all: $(CASES)
 
 # Common FCTX-based test drivers
@@ -16,6 +16,10 @@ isect1.o:  isect1.c      isect.h
 isect1:    isect-test.o  isect1.o
 isect2.o:  isect2.c      isect.h
 isect2:    isect-test.o  isect2.o
+isect3.o:  isect3.c      isect.h
+isect3:    isect-test.o  isect3.o
+
+# Implementations linked against common test driver
 omsect1.o: omsect1.c     omsect.h
 omsect1:   omsect-test.o omsect1.o
 omsect2.o: omsect2.c     omsect.h
