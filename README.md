@@ -416,3 +416,26 @@ elimination.  This revision passes the same test suite as the original.  I
 suspect it will perform better.  Though, in theory, a [Sufficiently Smart
 Compiler](http://c2.com/cgi/wiki?SufficientlySmartCompiler) should produce the
 same output from both versions.
+
+Three more transformations are factorizing boolean expressions, moving
+the computation of A into the case where an intersection exists, and
+reordering local variables to better match their use order:
+
+    /* Revision 3 */
+    int isect(double a, double b, double x, double y, double *l, double *u)
+    {
+        const int D=b<x, E=b<y, C=a<y, B=a<x;
+        const int ret = D&~E|~D&E|C&~(D&E)|~C&(D|E)|B&~(C&D&E)|~B&(C|D|E);
+        if (ret) {
+            const int A=a<b, F=x<y;
+            *l  = a*(A&(B&~C&~E&~F|~B&C&~D&F));  /* alower */
+            *u  = a*(~A&(B&~C&D&~F|~B&C&E&F));   /* aupper */
+            *l += b*(~A&(~C&D&~E&~F|~B&~D&E&F)); /* blower */
+            *u += b*(A&(B&D&~E&~F|C&~D&E&F));    /* bupper */
+            *l += x*(F&(A&B&C&~D|~A&~B&D&E));    /* xlower */
+            *u += x*(~F&(A&B&~D&~E|~A&~B&~C&D)); /* xupper */
+            *l += y*(~F&(A&B&C&~E|~A&~C&D&E));   /* ylower */
+            *u += y*(F&(A&C&~D&~E|~A&~B&~C&E));  /* yupper */
+        }
+        return ret;
+    }

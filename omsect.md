@@ -215,8 +215,8 @@ may obtain
     int omsect(double a, double b, double x, double y, double *l, double *u)
     {
         assert(a<b);
-        const int B=a<x, C=a<y, D=b<x, E=b<y;
-        const int ret = B&~(C&D&E)|C&~(D&E)|D&~(E)|~B&(C|D|E)|~C&(D|E)|~D&(E);
+        const int D=b<x, E=b<y, C=a<y, B=a<x;
+        const int ret = D&~E|~D&E|C&~(D&E)|~C&(D|E)|B&~(C&D&E)|~B&(C|D|E);
         if (ret) {
             const int F=x<y;
             *l  = a*(~B&C&~D&F);               /* alower */
