@@ -441,7 +441,7 @@ reordering local variables to better match their use order:
         return ret;
     }
 
-## Extension to Open, Semi-ordered Intervals
+## Reduction to Open, Semi-ordered Intervals
 
 ### Problem specification
 
