@@ -441,6 +441,10 @@ reordering local variables to better match their use order:
         return ret;
     }
 
+To get this revision to build silently with `-Wall` on recent GCC versions, one
+must add a large number of parenthesis implied by C's order of operations.  The
+result is uninteresting and not shown in this writeup.
+
 ## Reduction to Open, Semi-ordered Intervals
 
 ### Problem specification
@@ -664,3 +668,6 @@ may obtain
         }
         return ret;
     }
+
+Again, compiling cleanly on `-Wall` requires adding parenthesis already implied
+by C's order of operations.  The result is not shown here.
