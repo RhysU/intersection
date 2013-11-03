@@ -1,4 +1,5 @@
 *.o
+*.s
 isect1
 isect2
 isect3

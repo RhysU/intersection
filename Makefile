@@ -31,8 +31,13 @@ omsect3:        omsect-test.o  omsect3.o
 isect4.o:  CFLAGS += -Wall -Wextra
 omsect3.o: CFLAGS += -Wall -Wextra
 
+# Permits easily obtaining annotated assembly for all kernels
+assembly: $(CASES:=.s)
+%.s: %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -Wa,-aslh -c $? > $@
+
 clean:
-	rm -f $(CASES) *.o
+	rm -f $(CASES) *.o *.s
 
 check: $(CASES)
 	@(set -e; for case in $(CASES); do echo; ./$$case; done)
