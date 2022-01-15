@@ -1,4 +1,6 @@
-## Intersections of Half Open, Ordered Intervals
+# Intersections of Half Open, Ordered Intervals
+
+[![Build Status](https://travis-ci.com/RhysU/intersection.svg?branch=master)](https://travis-ci.com/github/RhysU/intersection)
 
 Given half-open intervals [a, b) and [x, y) where a <= b and x <= y,
 
@@ -25,9 +27,9 @@ cases via negation these two situations yielding `!(b <= x || y <= a)` which can
 be simplified to find Answer (1a), `x < b && y < a`.  When condition (1a) holds,
 the intersection interval is [`max(a,x)` `min(b,y)`)
 
-## Extension to Open, Unordered Intervals
+# Extension to Open, Unordered Intervals
 
-### Problem specification
+## Problem specification
 
 Given open intervals (a, b) and (x, y) where an ordering relation is known for
 neither a and b nor x and y.  Call these *unordered intervals*.  Again,
@@ -83,7 +85,7 @@ Downloads of the [qmc source](http://packages.debian.org/source/sid/qmc) can be
 had from Debian but I've not had much luck tracking down the
 [project](http://qmc.pollaknet.at/) or its author Thomas Pollack.
 
-### Tabulated Boolean functions
+## Tabulated Boolean functions
 
 Given six input booleans related to partial ordering results, there are nine
 output functions of interest.  The first output is the presence or absence of
@@ -302,7 +304,7 @@ then compare to determine if the 2nd and 3rd order statistic implies an
 intersection occurred.  Concepts like Sorting Networks
 http://en.wikipedia.org/wiki/Sorting_network would be useful here.
 
-### Code and Unit Tests
+## Code and Unit Tests
 
 Anyhow, let's put all of this nonsense together into a usable function...
 
@@ -445,9 +447,9 @@ To get this revision to build silently with `-Wall` on recent GCC versions, one
 must add a large number of parenthesis implied by C's order of operations.  The
 result is uninteresting and not shown in this writeup.
 
-## Reduction to Open, Semi-ordered Intervals
+# Reduction to Open, Semi-ordered Intervals
 
-### Problem specification
+## Problem specification
 
 Given open intervals (a, b) and (x, y) where a <= b holds but an ordering
 relation is unknown for x and y.  Two questions are of interest:
@@ -458,7 +460,7 @@ relation is unknown for x and y.  Two questions are of interest:
 By *order-matching intersection* I mean an intersection interval with
 endpoints (p, q) such that p < q whenever x <= y and p > q whenever x > y.
 
-### Tabulated Boolean functions
+## Tabulated Boolean functions
 
 Given five input booleans related to partial ordering results, there are nine
 output functions of interest.  The first output is the presence or absence of
@@ -572,7 +574,7 @@ The upper bound never takes the value x.  Finally, when y is the upper bound:
 
     int yupper = B&C&~E&~F|B&C&~D&~E|C&~D&~E&F;
 
-### Code and Unit Tests
+## Code and Unit Tests
 
 Now, getting to the implementation...
 
