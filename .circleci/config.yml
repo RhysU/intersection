@@ -1,0 +1,24 @@
+version: 2.1
+
+jobs:
+  "CI":
+    docker:
+      - image: "cimg/base:2021.04"
+    steps:
+      - checkout
+      - run:
+          name: Dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y gcc-10
+      - run:
+          name: Build
+          command: CC=gcc-10 make
+      - run:
+          name: Test
+          command: CC=gcc-10 make check
+
+workflows:
+  build:
+    jobs:
+      - "CI"

@@ -1,6 +1,6 @@
 # Intersections of Half Open, Ordered Intervals
 
-[![Build Status](https://travis-ci.com/RhysU/intersection.svg?branch=master)](https://travis-ci.com/github/RhysU/intersection)
+[![Build Status](https://circleci.com/gh/RhysU/intersection.svg?style=shield)](https://app.circleci.com/pipelines/github/RhysU/intersection)
 
 Given half-open intervals [a, b) and [x, y) where a <= b and x <= y,
 
