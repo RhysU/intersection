@@ -9,8 +9,8 @@
 #ifndef ISECT_H
 
 /**
- * Given points \c a, \c b, \c x, and \c y, do intervals \c ab and \c xy
- * overlap and if so what is the overlapping interval?
+ * Given points \c a, \c b, \c x, and \c y, do half-open intervals [a,b) and
+ * [x,y) overlap and if so what is the overlapping interval?
  *
  * \param[in ] a Endpoint on the first interval
  * \param[in ] b Another endpoint on the first interval
