@@ -4,7 +4,7 @@ HOWSTRICT ?= -std=c99 -pedantic
 HOWFAST   ?= -g -O3
 CFLAGS    ?= $(HOWSTRICT) $(HOWFAST)
 
-CASES=isect1 isect2 isect3 isect4 omsect1 omsect2 omsect3
+CASES=isect1 isect2 isect3 isect4 omsect1 omsect2 omsect3 omsect4
 all: $(CASES)
 
 # Numbered implementations of isect() linked against common FCTX test driver
@@ -23,13 +23,16 @@ omsect-test.o:  omsect-test.c  fct.h
 omsect1.o:      omsect1.c      omsect.h
 omsect2.o:      omsect2.c      omsect.h
 omsect3.o:      omsect3.c      omsect.h
+omsect4.o:      omsect4.c      omsect.h
 omsect1:        omsect-test.o  omsect1.o
 omsect2:        omsect-test.o  omsect2.o
 omsect3:        omsect-test.o  omsect3.o
+omsect4:        omsect-test.o  omsect4.o
 
 # Only the final "production" versions of each have all warnings silenced
 isect4.o:  CFLAGS += -Wall -Wextra
 omsect3.o: CFLAGS += -Wall -Wextra
+omsect4.o: CFLAGS += -Wall -Wextra
 
 # Permits easily obtaining annotated assembly for all kernels
 assembly: $(CASES:=.s)
