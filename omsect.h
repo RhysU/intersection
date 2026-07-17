@@ -22,7 +22,8 @@
  *               endpoint of the order-matching intersection.
  * \param[out] h if method returns \c true, set to be the lower
  *               endpoint of the order-matching intersection.
- * \return True if the segments intersect.  False otherwise.
+ * \return True if the segments intersect.  False otherwise.  The touching
+ *         case [q, r) [r, s) returns true with empty intersection [r, r).
  */
 int omsect(double a, double b, double x, double y, double *l, double *u);
 
