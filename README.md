@@ -733,5 +733,4 @@ original.  Putting it all together:
     }
 
 This compiles cleanly with `-Wall -Wextra` and benchmarks roughly 2x faster
-than the original at `-O3` on x86-64, likely because the reduced operation
-count lets the optimizer make better use of hardware min/max instructions.
+than the original at `-O3` on x86-64 due to the reduced operation count.
